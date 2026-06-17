@@ -17,5 +17,17 @@ const UI = {
                 reader.readAsDataURL(file);
             }
         });
+    },
+
+    showModal: (title, message) => {
+        const modal = document.getElementById('custom-modal');
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-message').textContent = message;
+
+        modal.classList.remove('hidden');
+
+        document.getElementById('modal-close-btn').onclick = () => {
+            modal.classList.add('hidden');
+        };
     }
 };

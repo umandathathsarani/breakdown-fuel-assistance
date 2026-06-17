@@ -9,11 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const imageFile = document.getElementById('dashboard-img').files[0];
 
         if (!imageFile) {
-            alert("Please upload a picture of your dashboard warning light.");
+            UI.showModal("Missing Information", "Please upload a picture of your dashboard warning light.");
             return;
         }
 
         console.log("Ready to send to Python backend:", location, imageFile.name);
-        alert("Frontend is working! Next step: Connect to Python API.");
+        
+        UI.showModal("Success!", "Frontend is working! Next step: Connect to Python API.");
     });
 });
