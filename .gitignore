@@ -1,4 +1,8 @@
 venv/
+.env
 __pycache__/
 *.pyc
 .DS_Store
+ai_vision/dataset/
+ai_vision/*.pt
+ai_vision/*.h5
