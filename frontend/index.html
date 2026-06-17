@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On-Road Assistance</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+    <header>
+        <h1>RescueRoute</h1>
+        <p>AI-Powered Breakdown & Fuel Assistance</p>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h2>Report a Breakdown</h2>
+            <p>Upload a photo of your dashboard warning light for AI diagnosis.</p>
+            
+            <form id="breakdown-form">
+                <div class="upload-area" id="upload-area">
+                    <input type="file" id="dashboard-img" accept="image/*" hidden>
+                    <button type="button" id="upload-btn" class="btn-secondary">Choose Image</button>
+                    <div id="image-preview" class="preview-box"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Current Location</label>
+                    <input type="text" id="location" placeholder="e.g., Kaduwela Road, Malabe" required>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submit-btn">Request Assistance</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/ui.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
