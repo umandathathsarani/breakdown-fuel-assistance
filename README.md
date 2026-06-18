@@ -1,5 +1,7 @@
 # RescueRoute Pro 🚗💨📌
 
+---
+
 ## Project Overview
 
 **RescueRoute Pro** is a full-stack web application built to modernize roadside assistance. Instead of drivers guessing what is wrong with their vehicle, this platform leverages a custom-trained Convolutional Neural Network (CNN) to automatically identify dashboard warning lights, gauge the severity, and seamlessly dispatch local service providers.
