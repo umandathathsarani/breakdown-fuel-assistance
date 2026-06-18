@@ -8,7 +8,7 @@ label {
     margin-bottom: 0.5rem;
     font-weight: 600;
     font-size: 0.875rem;
-    color: #334155;
+    color: #374151;
 }
 
 input[type="text"],
@@ -29,11 +29,11 @@ input[type="number"]:focus,
 select:focus {
     border-color: var(--primary);
     background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
 }
 
 .upload-area {
-    border: 2px dashed #cbd5e1;
+    border: 2px dashed var(--silver-accent);
     padding: 2.5rem 1.5rem;
     text-align: center;
     border-radius: 8px;
@@ -68,24 +68,28 @@ button {
 }
 
 .btn-primary {
-    background-color: var(--primary);
+    background-color: var(--dark-bg);
     color: white;
+    border: 1px solid #1f2937;
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-hover);
+    background-color: #1f2937;
+    border-color: var(--primary);
 }
 
 .btn-secondary {
     background-color: #e2e8f0;
-    color: #334155;
+    color: #374151;
     width: auto;
     font-size: 0.875rem;
     padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
 }
 
 .btn-secondary:hover {
     background-color: #cbd5e1;
+    border-color: var(--silver-accent);
 }
 
 input[type="radio"] {
