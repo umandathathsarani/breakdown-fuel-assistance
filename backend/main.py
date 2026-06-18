@@ -90,6 +90,34 @@ async def diagnose_dashboard(
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Inference failure: {str(e)}")
 
+@app.post("/api/fuel")
+async def request_fuel(
+    location: str = Form(...),
+    fuel_type: str = Form(...),
+    amount: str = Form(...)
+):
+    try:
+        ticket_id = int(time.time() * 1000)
+  
+        dispatch_ticket = {
+            "ticket_id": ticket_id,
+            "location": location,
+            "diagnosis": f"Fuel Delivery: {amount}L of {fuel_type}",
+            "confidence": "100.00% (Manual Request)",
+            "status": "Pending",
+            "timestamp": time.strftime("%H:%M:%S")
+        }
+        
+        ACTIVE_REQUESTS.append(dispatch_ticket)
+
+        return {
+            "status": "success",
+            "ticket": dispatch_ticket,
+            "message": f"Fuel request for {amount}L of {fuel_type} dispatched."
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Fuel request failure: {str(e)}")
+
 @app.get("/api/providers/requests")
 async def get_provider_queue():
     """Returns the list of active breakdown emergency requests."""

@@ -19,15 +19,42 @@
             <p>Upload a photo of your dashboard warning light for AI diagnosis.</p>
             
             <form id="breakdown-form">
-                <div class="upload-area" id="upload-area">
-                    <input type="file" id="dashboard-img" accept="image/*" hidden>
-                    <button type="button" id="upload-btn" class="btn-secondary">Choose Image</button>
-                    <div id="image-preview" class="preview-box"></div>
+                <div class="form-group" style="flex-direction: row; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="service_type" value="breakdown" checked> AI Diagnosis
+                    </label>
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="service_type" value="fuel"> Fuel Delivery
+                    </label>
+                </div>
+
+                <div id="breakdown-section">
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" id="dashboard-img" accept="image/*" hidden>
+                        <button type="button" id="upload-btn" class="btn-secondary">Choose Image</button>
+                        <div id="image-preview" class="preview-box"></div>
+                    </div>
+                </div>
+
+                <div id="fuel-section" style="display: none; background: #fafafa; padding: 1.5rem; border-radius: 4px; margin-bottom: 1.5rem; border: 1px solid #e2e8f0;">
+                    <div class="form-group">
+                        <label for="fuel-type">Required Fuel Type</label>
+                        <select id="fuel-type" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px;">
+                            <option value="Petrol (92 Octane)">Petrol (92 Octane)</option>
+                            <option value="Petrol (95 Octane)">Petrol (95 Octane)</option>
+                            <option value="Auto Diesel">Auto Diesel</option>
+                            <option value="Super Diesel">Super Diesel</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fuel-amount">Amount (Liters)</label>
+                        <input type="number" id="fuel-amount" placeholder="e.g., 5" min="1" max="20">
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="location">Current Location</label>
-                    <input type="text" id="location" placeholder="e.g., Kaduwela Road, Malabe" required>
+                    <input type="text" id="location" placeholder="e.g., Campus Road, Malabe" required>
                 </div>
 
                 <button type="submit" class="btn-primary" id="submit-btn">Request Assistance</button>

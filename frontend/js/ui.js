@@ -19,6 +19,24 @@ const UI = {
         });
     },
 
+    setupServiceToggle: () => {
+        const radios = document.querySelectorAll('input[name="service_type"]');
+        const breakdownSection = document.getElementById('breakdown-section');
+        const fuelSection = document.getElementById('fuel-section');
+
+        radios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'breakdown') {
+                    breakdownSection.style.display = 'block';
+                    fuelSection.style.display = 'none';
+                } else {
+                    breakdownSection.style.display = 'none';
+                    fuelSection.style.display = 'block';
+                }
+            });
+        });
+    },
+
     showModal: (title, message) => {
         const modal = document.getElementById('custom-modal');
         document.getElementById('modal-title').textContent = title;
@@ -30,4 +48,5 @@ const UI = {
             modal.classList.add('hidden');
         };
     }
+
 };
