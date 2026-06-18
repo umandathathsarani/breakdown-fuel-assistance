@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Dispatch Dashboard</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .ticket-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+        .ticket-card { border-left: 5px solid #e2e8f0; padding: 1.5rem; background: var(--card-bg); border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .ticket-card.Pending { border-left-color: #e53e3e; }
+        .ticket-card.Dispatched { border-left-color: #3182ce; opacity: 0.7; }
+        .meta-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem; color: #666; }
+        .btn-claim { width: auto; margin-top: 1rem; background-color: #2b6cb0; color: white; padding: 0.5rem 1rem;}
+    </style>
+</head>
+<body>
+    <header style="background-color: #2d3748;">
+        <h1>RescueRoute Pro</h1>
+        <p>Operator Dispatch & Emergency Queue Management</p>
+    </header>
+
+    <main class="container">
+        <h2>Active Incident Logs</h2>
+        <p>Real-time breakdown requests powered by driver-side computer vision models.</p>
+        <div id="queue-container" class="ticket-list"></div>
+    </main>
+
+    <script src="js/provider.js"></script>
+</body>
+</html>
