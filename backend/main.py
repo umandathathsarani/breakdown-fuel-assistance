@@ -1,31 +1,82 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
+import torch
+from torchvision import transforms
+from PIL import Image
+import io
+import os
+import sys
 
-app = FastAPI(title="RescueRoute AI API")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from ai_vision.model import DashboardLightCNN
+
+app = FastAPI(title="RescueRoute AI Production API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_PATH = os.path.join(BASE_DIR, 'ai_vision', 'dashboard_cnn.pt')
+
+CLASS_MAPPING = {
+    0: "Battery System Alert",
+    1: "Check Engine Warning",
+    2: "Low Fuel Level Indicator",
+    3: "Low Oil Pressure Critical Alert"
+}
+
+if not os.path.exists(MODEL_PATH):
+    print(f"CRITICAL ERROR: Weights file not found at {MODEL_PATH}")
+    model = None
+else:
+    model = DashboardLightCNN(num_classes=4)
+    model.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device('cpu')))
+    model.eval() 
+    print("AI Model loaded into FastAPI server successfully.")
+
+inference_transforms = transforms.Compose([
+    transforms.Resize((128, 128)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+])
+
 @app.post("/api/diagnose")
 async def diagnose_dashboard(image: UploadFile = File(...)):
-    contents = await image.read()
+    if model is None:
+        raise HTTPException(status_code=500, detail="AI engine offline. Model weights missing.")
 
-    mock_prediction = "Check Engine Light"
-    confidence = 0.88
+    try:
+        image_bytes = await image.read()
+        pil_image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+        
+        tensor_image = inference_transforms(pil_image)
+        tensor_image = tensor_image.unsqueeze(0)
 
-    return {
-        "status": "success",
-        "filename": image.filename,
-        "diagnosis": mock_prediction,
-        "confidence": confidence,
-        "message": f"AI identified: {mock_prediction}. Proceed with caution."
-    }
+        with torch.no_grad():
+            outputs = model(tensor_image)
+            probabilities = torch.nn.functional.softmax(outputs[0], dim=0)
+            predicted_class_idx = torch.argmax(probabilities).item()
+            confidence_score = probabilities[predicted_class_idx].item()
+
+        diagnosis_text = CLASS_MAPPING.get(predicted_class_idx, "Unknown Malfunction")
+
+        return {
+            "status": "success",
+            "filename": image.filename,
+            "id": predicted_class_idx,
+            "diagnosis": diagnosis_text,
+            "confidence": round(confidence_score, 4),
+            "message": f"AI Engine safely identified: {diagnosis_text}."
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to process image matrix: {str(e)}")
 
 if __name__ == "__main__":
+    import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
